@@ -35,22 +35,20 @@ class ProductService implements ProductConstructor
         );
     }
     
-    public function update(ProductRequest $request, Product $product) : ProductResource
+    public function update(ProductRequest $request, Product $product): ProductResource
     {
         $validatedData = $request->validated();
 
         if ($request->hasFile('image')) {
             $validatedData['image'] = $request->file('image')->store('products', 'public');
-        } else {
-            $validatedData['image'] = $product->image;
         }
 
         $product->update($validatedData);
-        
-        return ProductResource::make($product->refresh());
-}
 
-    
+        return new ProductResource($product->refresh());
+    }
+
+
     public function destroy(Product $product) : bool
     {
         return $product->delete();
