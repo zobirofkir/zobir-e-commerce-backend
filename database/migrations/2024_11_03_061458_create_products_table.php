@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->float('price');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('slug');
             $table->softDeletes();
             $table->timestamps();
