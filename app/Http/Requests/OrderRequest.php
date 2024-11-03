@@ -26,7 +26,8 @@ class OrderRequest extends FormRequest
             'address' => 'required|string|max:255',
             'cart_items' => 'required|array',
             'cart_items.*.product_id' => 'required|exists:products,id',
-            'cart_items.*.quantity' => 'required|integer|min:1', 
+            'cart_items.*.quantity' => 'required|integer|min:1',
+
         ];
     }
 }

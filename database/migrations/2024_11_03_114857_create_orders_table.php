@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('address');
             $table->float('total_amount');
-            $table->string('status')->default('pending');
+            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }

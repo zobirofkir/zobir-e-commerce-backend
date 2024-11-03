@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +16,10 @@ class Order extends Model
         'address',
         'total_amount',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => OrderStatus::class,
     ];
 
     public function user()

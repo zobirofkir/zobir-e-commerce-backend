@@ -2,6 +2,7 @@
 
 namespace App\Services\Services;
 
+use App\Enums\OrderStatus;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
@@ -32,7 +33,7 @@ class OrderService implements OrderConstructor
             'phone' => $validated['phone'],
             'address' => $validated['address'],
             'total_amount' => 0, 
-            'status' => 'pending',
+            'status' => OrderStatus::PENDING->value,
         ]);
 
         $totalAmount = 0;
