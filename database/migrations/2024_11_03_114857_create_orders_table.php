@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('address');
             $table->float('total_amount');
             $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
+            $table->string('payment_method');
             $table->timestamps();
         });
     }
