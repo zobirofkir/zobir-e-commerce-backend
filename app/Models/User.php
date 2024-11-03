@@ -47,9 +47,14 @@ class User extends Authenticatable
         ];
     }
 
-    public function generateToken() : string 
+    public function categories()
     {
-        return $this->createToken('accessToken')->accessToken;
+        return $this->hasMany(Category::class);
+    }
+
+    public function generateToken() 
+    {
+        return $this->createToken('accessToken');
     }
 
 }
