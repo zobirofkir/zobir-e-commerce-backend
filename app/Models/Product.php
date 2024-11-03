@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -18,4 +19,19 @@ class Product extends Model
         "image",
         "slug",
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($blog) {
+            $blog->slug = Str::slug($blog->title);
+        });
+
+        static::updating(function ($blog) {
+            if ($blog->isDirty('title')) {
+                $blog->slug = Str::slug($blog->title);
+            }
+        });
+    }
 }
