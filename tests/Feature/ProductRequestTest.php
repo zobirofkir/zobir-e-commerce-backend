@@ -59,6 +59,26 @@ class ProductRequestTest extends TestCase
     }
 
     /**
+     * Test Update Product
+     */
+    public function testUpdateProduct()
+    {
+        $user = $this->generateAccessToken();
+        
+        $category = Category::factory()->create([
+            "user_id" => $user->id
+        ]);
+
+        $products = Product::factory()->create([
+            "user_id" => $user->id,
+            "category_id" => $category->id
+        ]);
+
+        $response = $this->put("/api/products/$products->id", $products->toArray());
+        $response->assertStatus(200);
+    }
+
+    /**
      * Test Delete Product
      */
     public function testDeleteProduct()
