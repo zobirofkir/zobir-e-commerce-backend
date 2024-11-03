@@ -30,8 +30,8 @@ class ProductController extends Controller
     {
         return ProductFacade::update($request, $product);
     }
-
-    public function destroy(Product $product) : ProductResource
+    
+    public function destroy(Product $product) : bool
     {
         return ProductFacade::destroy($product);
     }
