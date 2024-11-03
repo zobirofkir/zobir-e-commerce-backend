@@ -11,6 +11,18 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderService implements OrderConstructor
 {
+    public function getOrders()
+    {
+        return OrderResource::collection(
+            Order::all()
+        );
+    }
+
+    public function showOrder(Order $order)
+    {
+        return OrderResource::make( $order );
+    }
+
     public function createOrder(OrderRequest $request)
     {
         $validated = $request->validated();
@@ -40,5 +52,10 @@ class OrderService implements OrderConstructor
         $order->update(['total_amount' => $totalAmount]); 
 
         return OrderResource::make( $order );
+    }
+
+    public function deleteOrder(Order $order)
+    {
+        return $order->delete();
     }
 }
