@@ -11,7 +11,7 @@ class PaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Allow all users to make this request
+        return true;
     }
 
     /**
@@ -22,14 +22,7 @@ class PaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'payment_method' => 'required|array',
-            'payment_method.id' => 'required|string',
-            'payment_method.type' => 'required|in:cash_on_delivery,visa',
-            'payment_method.card' => 'required_if:payment_method.type,visa|array', 
-            'payment_method.card.number' => 'required_if:payment_method.type,visa|digits:16', 
-            'payment_method.card.exp_month' => 'required_if:payment_method.type,visa|integer|between:1,12', 
-            'payment_method.card.exp_year' => 'required_if:payment_method.type,visa|integer|digits:4|min:' . date('Y') . '|max:' . (date('Y') + 20), 
-            'payment_method.card.cvc' => 'required_if:payment_method.type,visa|digits:3', 
+            'payment_method_id' => 'required|string',
         ];
     }
 }

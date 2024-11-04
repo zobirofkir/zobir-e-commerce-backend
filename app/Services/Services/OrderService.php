@@ -4,6 +4,7 @@ namespace App\Services\Services;
 
 use App\Enums\OrderStatus;
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
@@ -30,7 +31,7 @@ class OrderService implements OrderConstructor
             'user_id' => Auth::id(),
             'phone' => $validated['phone'],
             'address' => $validated['address'],
-            'total_amount' => 0, 
+            'total_amount' => 0,
             'status' => OrderStatus::PENDING->value,
             'payment_method' => $validated['payment_method']['type'],
         ]);
@@ -51,24 +52,13 @@ class OrderService implements OrderConstructor
 
         $order->update(['total_amount' => $totalAmount]);
 
-        if ($validated['payment_method']['type'] === 'visa') { 
-            $cardDetails = $validated['payment_method']['card']; 
-            $this->processPayment($order, $cardDetails); 
-        }
-
-        return OrderResource::make($order);
+        return response()->json([
+            'order' => OrderResource::make($order),
+        ]);
     }
 
     public function deleteOrder(Order $order)
     {
         return $order->delete();
-    }
-
-    public function processPayment(Order $order, array $cardDetails)
-    {
-        $paymentService = new PaymentService();
-
-        $paymentService->createPayment($order, $cardDetails);
-
     }
 }

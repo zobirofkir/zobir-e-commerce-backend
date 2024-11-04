@@ -19,7 +19,7 @@ class OrderFactory extends Factory
         return [
             "phone" => fake()->phoneNumber(),
             "address" => fake()->address(),
-            "total_amount" => fake()->numberBetween(100, 1000),
+            "total_amount" => fake()->randomFloat(2, 0, 100),
         ];
     }
 }

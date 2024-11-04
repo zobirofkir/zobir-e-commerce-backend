@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\PaymentRequest;
 use App\Models\Order;
 use App\Services\Facades\OrderFacade;
 

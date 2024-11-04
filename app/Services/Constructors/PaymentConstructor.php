@@ -1,9 +1,12 @@
 <?php
 namespace App\Services\Constructors;
 
+use App\Http\Requests\PaymentRequest;
 use App\Models\Order;
 
-interface PaymentConstructor
+interface  PaymentConstructor
 {
-    public function createPayment(Order $order, string $paymentMethodId);
+
+    public function processPayment(Order $order, PaymentRequest $request);
+    
 }
