@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
@@ -13,9 +14,13 @@ Route::post("auth/logout", [AuthenticationController::class, 'logout']);
 
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('/categories', CategoryController::class);
+
     Route::apiResource('/products', ProductController::class);
 
     Route::apiResource('/orders', OrderController::class);
 
     Route::post('/orders/{order}/payments', [PaymentController::class, 'processPayment']);
+
+    Route::apiResource('/brands', BrandController::class);
+
 });
