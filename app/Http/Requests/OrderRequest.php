@@ -28,6 +28,12 @@ class OrderRequest extends FormRequest
             'cart_items.*.product_id' => 'required|exists:products,id',
             'cart_items.*.quantity' => 'required|integer|min:1',
 
+
+            'card_number' => 'required|string|size:16',
+            'exp_month' => 'required|integer|between:1,12',
+            'exp_year' => 'required|integer|min:' . date('Y'),
+            'cvc' => 'required|string|size:3', 
+
         ];
     }
 }
