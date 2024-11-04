@@ -15,7 +15,9 @@ class OrderService implements OrderConstructor
 {
     public function getOrders()
     {
-        return OrderResource::collection(Order::all());
+        return OrderResource::collection(
+            Order::all()
+        );
     }
 
     public function showOrder(Order $order)
@@ -28,12 +30,11 @@ class OrderService implements OrderConstructor
         $validated = $request->validated();
 
         $order = Order::create([
-            'user_id' => Auth::id(),
+            'user_id' => Auth::user()->id,
             'phone' => $validated['phone'],
             'address' => $validated['address'],
             'total_amount' => 0,
             'status' => OrderStatus::PENDING->value,
-            'payment_method' => $validated['payment_method']['type'],
         ]);
 
         $totalAmount = 0;
