@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\PaymentRequest;
 use App\Models\Order;
 use App\Services\Facades\OrderFacade;
 
@@ -25,5 +26,10 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         return OrderFacade::deleteOrder($order);
+    }
+
+    public function processPayment(Order $order, PaymentRequest $request)
+    {
+        return OrderFacade::processPayment($order, $request);
     }
 }

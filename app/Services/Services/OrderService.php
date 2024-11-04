@@ -4,6 +4,7 @@ namespace App\Services\Services;
 
 use App\Enums\OrderStatus;
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
@@ -31,7 +32,6 @@ class OrderService implements OrderConstructor
         return OrderResource::make($order);
     }
 
-
     public function createOrder(OrderRequest $request)
     {
         $validated = $request->validated();
@@ -41,14 +41,14 @@ class OrderService implements OrderConstructor
             'user_id' => Auth::user()->id,
             'phone' => $validated['phone'],
             'address' => $validated['address'],
-            'total_amount' => 0, 
+            'total_amount' => 0,
             'status' => OrderStatus::PENDING->value,
         ]);
 
         $totalAmount = 0;
 
         foreach ($validated['cart_items'] as $item) {
-            $product = Product::findOrFail($item['product_id']); 
+            $product = Product::findOrFail($item['product_id']);
 
             $orderItem = $order->items()->create([
                 'product_id' => $product->id,
@@ -61,8 +61,17 @@ class OrderService implements OrderConstructor
 
         $order->update(['total_amount' => $totalAmount]);
 
-        // Pass the $order instance here
-        $paymentResponse = $this->createPaymentIntent($totalAmount, $order, $validated);
+        // Return the order without processing payment
+        return response()->json([
+            'order' => OrderResource::make($order),
+        ]);
+    }
+
+    public function processPayment(Order $order, PaymentRequest $request)
+    {
+        $validated = $request->validated();
+
+        $paymentResponse = $this->createPaymentIntent($order->total_amount, $order, $validated);
 
         if (isset($paymentResponse['error'])) {
             return response()->json(['error' => 'Payment failed: ' . $paymentResponse['error']], 500);
@@ -84,15 +93,7 @@ class OrderService implements OrderConstructor
         $paymentIntent = PaymentIntent::create([
             'amount' => $totalAmount * 100,
             'currency' => 'usd', 
-            'payment_method_data' => [
-                'type' => 'card',
-                'card' => [
-                    'number' => $validated['card_number'],
-                    'exp_month' => $validated['exp_month'],
-                    'exp_year' => $validated['exp_year'],
-                    'cvc' => $validated['cvc'],
-                ],
-            ],
+            'payment_method' => $validated['payment_method_id'], // This will be available during payment processing
             'confirm' => true, 
             'metadata' => [
                 'order_id' => $order->id,

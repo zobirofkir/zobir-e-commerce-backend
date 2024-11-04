@@ -15,4 +15,6 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('/products', ProductController::class);
 
     Route::apiResource('/orders', OrderController::class);
+
+    Route::post('/orders/{order}/payments', [OrderController::class, 'processPayment']);
 });
