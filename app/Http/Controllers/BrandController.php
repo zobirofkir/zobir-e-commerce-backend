@@ -34,7 +34,7 @@ class BrandController extends Controller
     }
 
 
-    public function destroy(Brand $brand) : BrandResource
+    public function destroy(Brand $brand) : bool
     {
         return BrandFacade::destroy($brand);
     }
