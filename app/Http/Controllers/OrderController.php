@@ -27,9 +27,4 @@ class OrderController extends Controller
     {
         return OrderFacade::deleteOrder($order);
     }
-
-    public function processPayment(Order $order, PaymentRequest $request)
-    {
-        return OrderFacade::processPayment($order, $request);
-    }
 }

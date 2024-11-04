@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,5 +17,5 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('/orders', OrderController::class);
 
-    Route::post('/orders/{order}/payments', [OrderController::class, 'processPayment']);
+    Route::post('/orders/{order}/payments', [PaymentController::class, 'processPayment']);
 });

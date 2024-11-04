@@ -5,5 +5,6 @@ return [
     App\Providers\AuthenticationServiceProvider::class,
     App\Providers\CategoryServiceProvider::class,
     App\Providers\OrderServiceProvider::class,
+    App\Providers\PaymentServiceProvider::class,
     App\Providers\ProductServiceProvider::class,
 ];
