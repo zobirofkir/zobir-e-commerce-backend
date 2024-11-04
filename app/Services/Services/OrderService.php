@@ -81,37 +81,33 @@ class OrderService implements OrderConstructor
 
     private function createPaymentIntent($totalAmount, Order $order, $validated)
     {
-        try {
-            $paymentIntent = PaymentIntent::create([
-                'amount' => $totalAmount * 100, // Amount in cents
-                'currency' => 'usd', // Set your currency
-                'payment_method_data' => [
-                    'type' => 'card',
-                    'card' => [
-                        'number' => $validated['card_number'],
-                        'exp_month' => $validated['exp_month'],
-                        'exp_year' => $validated['exp_year'],
-                        'cvc' => $validated['cvc'],
-                    ],
+        $paymentIntent = PaymentIntent::create([
+            'amount' => $totalAmount * 100,
+            'currency' => 'usd', 
+            'payment_method_data' => [
+                'type' => 'card',
+                'card' => [
+                    'number' => $validated['card_number'],
+                    'exp_month' => $validated['exp_month'],
+                    'exp_year' => $validated['exp_year'],
+                    'cvc' => $validated['cvc'],
                 ],
-                'confirm' => true, // Automatically confirm the payment
-                'metadata' => [
-                    'order_id' => $order->id, // Use the created order ID
-                    'user_id' => Auth::user()->id,
-                ],
-                'automatic_payment_methods' => [
-                    'enabled' => true,
-                    'allow_redirects' => 'never', // Prevents redirects
-                ],
-            ]);
+            ],
+            'confirm' => true, 
+            'metadata' => [
+                'order_id' => $order->id,
+                'user_id' => Auth::user()->id,
+            ],
+            'automatic_payment_methods' => [
+                'enabled' => true,
+                'allow_redirects' => 'never', 
+            ],
+        ]);
 
-            return [
-                'payment_intent_id' => $paymentIntent->id,
-                'client_secret' => $paymentIntent->client_secret,
-            ];
-        } catch (\Exception $e) {
-            return ['error' => $e->getMessage()];
-        }
+        return [
+            'payment_intent_id' => $paymentIntent->id,
+            'client_secret' => $paymentIntent->client_secret,
+        ];
     }
 
     public function deleteOrder(Order $order)
