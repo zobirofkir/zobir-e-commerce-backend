@@ -62,6 +62,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
     
+    public function brands()
+    {
+        return $this->hasMany(Brand::class);
+    }
+
     public function generateToken() 
     {
         return $this->createToken('accessToken');
